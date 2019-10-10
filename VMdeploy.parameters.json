@@ -1,0 +1,32 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+
+		"adminUsername": {
+            	"type": "string",
+            	"metadata": {
+                "description": "User name for the Virtual Machine."
+            }
+        },
+
+		"adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Password for the Virtual Machine."
+            }
+        },
+        "virtualMachines_nagakubenet_name": {
+            "value": null
+        },
+        "availabilitySets_NAGAKUBENET_externalid": {
+            "value": null
+        },
+        "disks_nagakubenet_OsDisk_1_ef31ef5126b141fc8ac47baca47c152b_externalid": {
+            "value": null
+        },
+        "networkInterfaces_nagakubenet546_externalid": {
+            "value": null
+        }
+    }
+}

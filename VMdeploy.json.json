@@ -1,0 +1,96 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_nagakubenet_name": {
+            "defaultValue": "nagakubenet",
+            "type": "String"
+        },
+        "availabilitySets_NAGAKUBENET_externalid": {
+            "defaultValue": "/subscriptions/2dfdf984-458e-4a0d-9c11-414e6d561666/resourceGroups/Nagakubenet/providers/Microsoft.Compute/availabilitySets/NAGAKUBENET",
+            "type": "String"
+        },
+        "disks_nagakubenet_OsDisk_1_ef31ef5126b141fc8ac47baca47c152b_externalid": {
+            "defaultValue": "/subscriptions/2dfdf984-458e-4a0d-9c11-414e6d561666/resourceGroups/NAGAKUBENET/providers/Microsoft.Compute/disks/nagakubenet_OsDisk_1_ef31ef5126b141fc8ac47baca47c152b",
+            "type": "String"
+        },
+        "networkInterfaces_nagakubenet546_externalid": {
+            "defaultValue": "/subscriptions/2dfdf984-458e-4a0d-9c11-414e6d561666/resourceGroups/Nagakubenet/providers/Microsoft.Network/networkInterfaces/nagakubenet546",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2019-03-01",
+            "name": "[parameters('virtualMachines_nagakubenet_name')]",
+            "location": "eastus",
+            "tags": {
+                "nagakubenet": "nagakubenet"
+            },
+            "identity": {
+                "principalId": "788dd81c-25a3-44d5-8c50-2d4a299977db",
+                "tenantId": "63687895-d2c4-482e-9aa3-e34f4f99c08c",
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "availabilitySet": {
+                    "id": "[parameters('availabilitySets_NAGAKUBENET_externalid')]"
+                },
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2s_v3"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "microsoft-aks",
+                        "offer": "aks",
+                        "sku": "aks-ubuntu-1804-201904",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Linux",
+                        "name": "[concat(parameters('virtualMachines_nagakubenet_name'), '_OsDisk_1_ef31ef5126b141fc8ac47baca47c152b')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "id": "[parameters('disks_nagakubenet_OsDisk_1_ef31ef5126b141fc8ac47baca47c152b_externalid')]"
+                        }
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_nagakubenet_name')]",
+                    "adminUsername": "Naga",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": true,
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "path": "/home/Naga/.ssh/authorized_keys",
+                                    "keyData": "---- BEGIN SSH2 PUBLIC KEY ----\nComment: \"rsa-key-20190921\"\nAAAAB3NzaC1yc2EAAAABJQAAAQEAi0A+MYbFPBHVpyPN6DzIlPNRcuU8li1N0Fyt\nAmyJ9kLJ4LTAfKX+BFG5jg8aggJbIOSd07y70aAYFhv2y635mQ/Dh/vL/Q5JJDUe\nlePLHnQSdaVk8ze2eReEFF0bUpvfN4qvbFtcn1qDPd1h2O/yT790ADwF3W4PrGgz\noEfQR1Jtk7PQBWcnztEDJulRbqUAjLwqBtJ/u/uJr9dBSnORep2KaD+yCPv9yjSS\ny51h26HByYh7qusS57TjmL/V/kNnXusEagZZtjweBqILCyMOJ3j71BS+KUFWOhYi\nN/STPVeViOlBXHUB4/BJaUMeqyX8Zb3+KLv8LxVYiomdP0rOfQ==\n---- END SSH2 PUBLIC KEY ----\n"
+                                }
+                            ]
+                        },
+                        "provisionVMAgent": true
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[parameters('networkInterfaces_nagakubenet546_externalid')]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat('https://', parameters('virtualMachines_nagakubenet_name'), 'diag.blob.core.windows.net/')]"
+                    }
+                }
+            }
+        }
+    ]
+}
